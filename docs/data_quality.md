@@ -20,8 +20,16 @@
 
 The remaining extracted fields have no missing values.
 
+## Resolution-Time Validity
+
+- Records with a `closed_date`: 874,649
+- Records with a valid non-negative resolution time: 874,285
+- Records with a negative resolution time: 364
+
+The analysis-ready dataset retains all records. It sets `resolution_hours` only when both timestamps are present and the computed duration is non-negative. The 364 negative-duration records are excluded from resolution-time summaries and remain available for data-quality review.
+
 ## Implications for Analysis
 
 - Request-volume, agency, complaint-type, borough, status, and channel analyses can use the full extract.
-- Resolution-time analysis uses only records with both valid `created_date` and `closed_date` values.
+- Resolution-time analysis uses only records with a valid non-negative `resolution_hours` value.
 - The project does not use `due_date` to infer SLA compliance, priority, or a closure deadline.
