@@ -36,6 +36,8 @@ See [data source notes](docs/data_source.md) and the [full data-quality report](
 
 ![NYC 311 request volume by borough](reports/figures/borough_request_volume_q1_2025.png)
 
+![Top complaint types within each borough](reports/figures/borough_complaint_mix_q1_2025.png)
+
 ## Analytical Safeguards
 
 - Requests are downloaded with deterministic keyset pagination on `created_date` and `unique_key`, then validated for duplicate keys and batch-boundary errors.
@@ -53,6 +55,10 @@ python src/create_charts.py
 ```
 
 The scripts save derived tables under `data/processed/overview/` and figures under `reports/figures/`.
+
+## Operational Interpretation
+
+See [operational interpretation and recommendations](docs/business_recommendations.md) for evidence-based uses of these findings and their limits.
 
 ## Data Policy
 
