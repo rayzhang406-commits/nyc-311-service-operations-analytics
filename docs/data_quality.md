@@ -23,10 +23,11 @@ The remaining extracted fields have no missing values.
 ## Resolution-Time Validity
 
 - Records with a `closed_date`: 874,649
+- Records with `status` equal to `Closed`: 877,281
 - Records with a valid non-negative resolution time: 874,285
 - Records with a negative resolution time: 364
 
-The analysis-ready dataset retains all records. It sets `resolution_hours` only when both timestamps are present and the computed duration is non-negative. The 364 negative-duration records are excluded from resolution-time summaries and remain available for data-quality review.
+The analysis-ready dataset retains all records. `has_closed_date` identifies records with a closure timestamp, while `status_is_closed` identifies records whose status is `Closed` in the extraction snapshot. These fields are not interchangeable: some records have a closed status but no closure timestamp. The dataset sets `resolution_hours` only when both timestamps are present and the computed duration is non-negative. The 364 negative-duration records are excluded from resolution-time summaries and remain available for data-quality review.
 
 ## Implications for Analysis
 
