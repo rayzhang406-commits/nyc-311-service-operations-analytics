@@ -110,11 +110,50 @@ def create_borough_volume_chart():
     plt.close(figure)
 
 
+def create_borough_complaint_mix_chart():
+    top_complaints = pd.read_csv(
+        OVERVIEW_DIRECTORY / "top_complaints_by_borough.csv"
+    )
+    top_complaints = top_complaints[top_complaints["borough"] != "Unspecified"]
+    borough_order = ["BRONX", "BROOKLYN", "MANHATTAN", "QUEENS", "STATEN ISLAND"]
+    matrix = top_complaints.pivot(
+        index="borough",
+        columns="complaint_type",
+        values="borough_share_pct",
+    ).reindex(borough_order).fillna(0)
+    matrix = matrix[matrix.max().sort_values(ascending=False).index]
+
+    figure, axis = plt.subplots(figsize=(11, 5.5))
+    image = axis.imshow(matrix.values, cmap="Blues", aspect="auto")
+    axis.set_xticks(range(len(matrix.columns)), matrix.columns, rotation=25, ha="right")
+    axis.set_yticks(range(len(matrix.index)), matrix.index)
+    for row_index, borough in enumerate(matrix.index):
+        for column_index, complaint_type in enumerate(matrix.columns):
+            value = matrix.loc[borough, complaint_type]
+            if value:
+                axis.text(
+                    column_index,
+                    row_index,
+                    f"{value:.1f}%",
+                    ha="center",
+                    va="center",
+                    color="white" if value >= 15 else "black",
+                )
+
+    colorbar = figure.colorbar(image, ax=axis)
+    colorbar.set_label("Share of requests within borough (%)")
+    axis.set_title("Top Three Complaint Types Within Each Borough | Q1 2025")
+    figure.tight_layout()
+    figure.savefig(FIGURE_DIRECTORY / "borough_complaint_mix_q1_2025.png", dpi=200)
+    plt.close(figure)
+
+
 def main():
     FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
     create_daily_volume_chart()
     create_volume_duration_chart()
     create_borough_volume_chart()
+    create_borough_complaint_mix_chart()
     print("Saved charts to:", FIGURE_DIRECTORY)
 
 
