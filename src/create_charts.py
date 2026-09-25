@@ -85,10 +85,36 @@ def create_volume_duration_chart():
     plt.close(figure)
 
 
+def create_borough_volume_chart():
+    borough = pd.read_csv(OVERVIEW_DIRECTORY / "borough_request_volume.csv")
+    borough = borough.sort_values("requests")
+    colors = ["#9ca3af" if name == "Unspecified" else "#1f5a94" for name in borough["borough"]]
+
+    figure, axis = plt.subplots(figsize=(9, 5.5))
+    bars = axis.barh(borough["borough"], borough["requests"], color=colors)
+    for bar, share in zip(bars, borough["share_pct"]):
+        axis.text(
+            bar.get_width() + 3_000,
+            bar.get_y() + bar.get_height() / 2,
+            f"{share:.2f}%",
+            va="center",
+        )
+
+    axis.set_title("NYC 311 Service Requests by Borough | Q1 2025")
+    axis.set_xlabel("Requests created in Q1 2025")
+    axis.set_ylabel("Borough")
+    axis.grid(axis="x", alpha=0.25)
+    axis.set_xlim(0, borough["requests"].max() * 1.18)
+    figure.tight_layout()
+    figure.savefig(FIGURE_DIRECTORY / "borough_request_volume_q1_2025.png", dpi=200)
+    plt.close(figure)
+
+
 def main():
     FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
     create_daily_volume_chart()
     create_volume_duration_chart()
+    create_borough_volume_chart()
     print("Saved charts to:", FIGURE_DIRECTORY)
 
 
