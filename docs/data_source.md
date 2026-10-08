@@ -16,9 +16,4 @@
 
 Dataset URL: https://data.cityofnewyork.us/resource/erm2-nwe9.json
 
-## Important limitations
-
-- Field values and request statuses may change because the dataset is updated daily.
-- `Due Date` represents an expected agency update date, not necessarily a closure deadline.
-- Agency comparisons require caution because agencies handle different types of requests.
-- Exact addresses and coordinates will not be used in the initial analysis.
+Field-level limitations and handling decisions are documented in [data_quality.md](data_quality.md).

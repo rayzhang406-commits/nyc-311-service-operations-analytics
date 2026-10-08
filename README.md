@@ -2,17 +2,18 @@
 
 ## Overview
 
-This is an independent portfolio project using publicly available NYC Open Data. It focuses on non-emergency NYC 311 service requests and is not affiliated with the City of New York or any previous employer.
+This portfolio project analyzes NYC 311 service requests created in Q1 2025 using public NYC Open Data.
 
-## Business Objective
+## Questions explored
 
-This project examines request volume, service-request mix, closure activity, and resolution time across complaint types, responsible agencies, and boroughs.
+I looked at request volume, request mix, closure activity, and resolution time across complaint types, agencies, and boroughs.
 
-The results will describe operational patterns rather than rank agencies, because different agencies handle requests with different levels of complexity.
+The goal is to describe patterns in the public records, not to rank agencies that handle different kinds of work.
 
 ## Data Scope
 
 - Source: [NYC 311 Service Requests from 2020 to Present](https://data.cityofnewyork.us/resource/erm2-nwe9.json)
+
 - Analysis period: January 1, 2025 through March 31, 2025
 - Extracted records: 884,765
 - Fields: 13 public operational fields, including request timestamps, agency, complaint type, status, borough, and channel
@@ -38,12 +39,17 @@ See [data source notes](docs/data_source.md) and the [full data-quality report](
 
 ![Top complaint types within each borough](reports/figures/borough_complaint_mix_q1_2025.png)
 
-## Analytical Safeguards
+## Analysis choices
 
-- Requests are downloaded with deterministic keyset pagination on `created_date` and `unique_key`, then validated for duplicate keys and batch-boundary errors.
-- `resolution_hours` is calculated only for records with valid non-negative created-to-closed durations: 874,285 records meet this condition.
-- `due_date` is missing for 99.53% of records and represents an expected agency update date rather than a closure deadline; it is not used for SLA or priority claims.
-- Agency comparisons are interpreted in the context of complaint mix and workflow complexity.
+- I used Q1 2025 to keep the dataset manageable while still covering a full three-month period.
+- I report median and 90th-percentile closure times because averages can be pulled upward by unusually long cases.
+- I left requests with negative calculated durations out of resolution-time summaries and documented them in the data-quality notes.
+
+## Data checks and limitations
+
+- Requests were downloaded with `created_date` and `unique_key` pagination, then checked for duplicate records.
+- Closure time is calculated only when the difference from `created_date` to `closed_date` is valid and non-negative.
+- `due_date` is not used to judge SLA performance, and agencies are not ranked directly by closure time.
 
 ## Reproduce the Overview
 
@@ -58,8 +64,4 @@ The scripts save derived tables under `data/processed/overview/` and figures und
 
 ## Operational Interpretation
 
-See [operational interpretation and recommendations](docs/business_recommendations.md) for evidence-based uses of these findings and their limits.
-
-## Data Policy
-
-All factual analysis will use documented public data. Any future synthetic demonstration will be stored separately and clearly labeled, and will not be mixed with public data.
+See [what the results suggest](docs/business_recommendations.md) for ways these patterns could be used.

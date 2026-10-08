@@ -18,7 +18,7 @@
 | `resolution_action_updated_date` | 3,499 | 0.40% | Retain as missing; do not use as a substitute for `closed_date`. |
 | `resolution_description` | 11,404 | 1.29% | Retain as missing; use only in optional text-based exploration. |
 
-The remaining extracted fields have no missing values.
+All other extracted fields are complete.
 
 ## Resolution-Time Validity
 
@@ -27,10 +27,10 @@ The remaining extracted fields have no missing values.
 - Records with a valid non-negative resolution time: 874,285
 - Records with a negative resolution time: 364
 
-The analysis-ready dataset retains all records. `has_closed_date` identifies records with a closure timestamp, while `status_is_closed` identifies records whose status is `Closed` in the extraction snapshot. These fields are not interchangeable: some records have a closed status but no closure timestamp. The dataset sets `resolution_hours` only when both timestamps are present and the computed duration is non-negative. The 364 negative-duration records are excluded from resolution-time summaries and remain available for data-quality review.
+The analysis-ready dataset keeps every record. `has_closed_date` marks records with a closure timestamp, while `status_is_closed` marks records whose status was `Closed` at extraction. They are not interchangeable: some records have a closed status but no closure timestamp. `resolution_hours` is populated only when both timestamps are present and the calculated duration is non-negative. The 364 negative-duration records are excluded from resolution-time summaries and retained for review.
 
 ## Implications for Analysis
 
 - Request-volume, agency, complaint-type, borough, status, and channel analyses can use the full extract.
 - Resolution-time analysis uses only records with a valid non-negative `resolution_hours` value.
-- The project does not use `due_date` to infer SLA compliance, priority, or a closure deadline.
+- `due_date` is not used to infer SLA compliance, priority, or a closure deadline.
