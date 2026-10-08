@@ -13,7 +13,6 @@ The goal is to describe patterns in the public records, not to rank agencies tha
 ## Data Scope
 
 - Source: [NYC 311 Service Requests from 2020 to Present](https://data.cityofnewyork.us/resource/erm2-nwe9.json)
-
 - Analysis period: January 1, 2025 through March 31, 2025
 - Extracted records: 884,765
 - Fields: 13 public operational fields, including request timestamps, agency, complaint type, status, borough, and channel
@@ -57,6 +56,7 @@ After obtaining the ignored local data files, rerun the overview and figures wit
 
 ```bash
 python src/analyze_overview.py
+python src/analyze_borough_mix.py
 python src/create_charts.py
 ```
 
